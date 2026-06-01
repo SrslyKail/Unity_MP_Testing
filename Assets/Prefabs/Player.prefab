@@ -243,7 +243,7 @@ MonoBehaviour:
   bodyTransform: {fileID: 2468333593439933914}
   rb: {fileID: 7280734516306369244}
   movementSpeed: 4
-  turnRate: 30
+  turnRateDegPerSecond: 270
 --- !u!1 &5891442389114277010
 GameObject:
   m_ObjectHideFlags: 0
