@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 5088483826241946511}
   - component: {fileID: 7280734516306369244}
   - component: {fileID: 3101716713482573072}
+  - component: {fileID: 355889998746418158}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2952986578
+  GlobalObjectIdHash: 536098114
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -244,6 +245,21 @@ MonoBehaviour:
   rb: {fileID: 7280734516306369244}
   movementSpeed: 4
   turnRateDegPerSecond: 270
+--- !u!114 &355889998746418158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681209710896531630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fcaeb2862e50b54688e5c4cd93e4a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAiming
+  ShowTopMostFoldoutHeaderGroup: 1
+  turretTransform: {fileID: 8053058068290374505}
+  inputReader: {fileID: 11400000, guid: c5eb4fca90495374ca60a24df65307ec, type: 2}
 --- !u!1 &5891442389114277010
 GameObject:
   m_ObjectHideFlags: 0
