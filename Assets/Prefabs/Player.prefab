@@ -102,6 +102,8 @@ GameObject:
   - component: {fileID: 5976568517143302647}
   - component: {fileID: 82132300937485270}
   - component: {fileID: 5088483826241946511}
+  - component: {fileID: 7280734516306369244}
+  - component: {fileID: 3101716713482573072}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -197,6 +199,51 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!50 &7280734516306369244
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681209710896531630}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &3101716713482573072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681209710896531630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 670e73d070a8a864a98216fbcdac17c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  ShowTopMostFoldoutHeaderGroup: 1
+  inputReader: {fileID: 11400000, guid: c5eb4fca90495374ca60a24df65307ec, type: 2}
+  bodyTransform: {fileID: 2468333593439933914}
+  rb: {fileID: 7280734516306369244}
+  movementSpeed: 4
+  turnRate: 30
 --- !u!1 &5891442389114277010
 GameObject:
   m_ObjectHideFlags: 0
