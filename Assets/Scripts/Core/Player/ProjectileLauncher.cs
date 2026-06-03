@@ -81,8 +81,11 @@ public class ProjectileLauncher : NetworkBehaviour
     [ServerRpc]
     private void PrimaryFireServerRpc(Vector3 spawnPosition, Vector3 spawnDirection)
     {
-        SpawnProjectile(serverProjectilePrefab, spawnPosition, spawnDirection);
-
+        GameObject projectile = SpawnProjectile(serverProjectilePrefab, spawnPosition, spawnDirection);
+        if (projectile.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact damageOnContact))
+        {
+            damageOnContact.SetOwner(this.OwnerClientId);
+        }
         PrimaryFireClientRpc(spawnPosition, spawnDirection);
     }
     
@@ -104,7 +107,7 @@ public class ProjectileLauncher : NetworkBehaviour
 
     }
 
-    private void SpawnProjectile(GameObject projectilePrefab, Vector3 spawnPosition, Vector3 spawnDirection)
+    private GameObject SpawnProjectile(GameObject projectilePrefab, Vector3 spawnPosition, Vector3 spawnDirection)
     {
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
         projectile.transform.up = spawnDirection;
@@ -115,6 +118,8 @@ public class ProjectileLauncher : NetworkBehaviour
         {
             rb.linearVelocity = rb.transform.up * projectileSpeed;
         }
+        
+        return projectile;
     }
 
     private IEnumerator ActivateMuzzleFlash()
