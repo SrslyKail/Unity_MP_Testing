@@ -1,17 +1,24 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
 public class ProjectileLauncher : NetworkBehaviour
 {
-    [Header("References")] [SerializeField]
-    private InputReader inputReader;
-
+    [Header("References")] 
+    [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private GameObject serverProjectilePrefab;
     [SerializeField] private GameObject clientProjectilePrefab;
-    [Header("Settings")] [SerializeField] private float projectileSpeed;
+    [SerializeField] private GameObject muzzleFlash;
+    [SerializeField] private Collider2D playerCollider;
+    [Header("Settings")] 
+    [SerializeField] private float projectileSpeed;
+    [SerializeField] private float fireRatePerSecond;
+    [SerializeField] private float muzzleFlashDurationSeconds;
 
-    private bool shouldFire = false;
+    private bool _shouldFire = false;
+    private float _previousFireTime;
+    private float _muzzleFlashTimer;
 
     public override void OnNetworkSpawn()
     {
@@ -35,35 +42,52 @@ public class ProjectileLauncher : NetworkBehaviour
 
     private void Update()
     {
+        if (_muzzleFlashTimer > 0f)
+        {
+            _muzzleFlashTimer -= Time.deltaTime;
+            if (_muzzleFlashTimer <= 0f)
+            {
+                muzzleFlash.SetActive(false);
+            }
+        }
+        
         if (!IsOwner)
         {
             return;
         }
 
-        if (!shouldFire)
+        if (!_shouldFire)
+        {
+            return;
+        }
+
+        //Check if we're allowed to fire.
+        if (Time.time < (1 / fireRatePerSecond) + _previousFireTime)
         {
             return;
         }
         
-        SpawnProjectileServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
+        PrimaryFireServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
         SpawnDummyProjectile(projectileSpawnPoint.position, projectileSpawnPoint.up);
+        
+        _previousFireTime = Time.time;
     }
 
     private void HandlePrimaryFire(bool requestFire)
     {
-        this.shouldFire = requestFire;
+        this._shouldFire = requestFire;
     }
 
     [ServerRpc]
-    private void SpawnProjectileServerRpc(Vector3 spawnPosition, Vector3 spawnDirection)
+    private void PrimaryFireServerRpc(Vector3 spawnPosition, Vector3 spawnDirection)
     {
-        GameObject projectile = Instantiate(serverProjectilePrefab, spawnPosition, Quaternion.identity);
-        projectile.transform.up = spawnDirection;
-        SpawnProjectileClientRpc(spawnPosition, spawnDirection);
+        SpawnProjectile(serverProjectilePrefab, spawnPosition, spawnDirection);
+
+        PrimaryFireClientRpc(spawnPosition, spawnDirection);
     }
     
     [ClientRpc]
-    private void SpawnProjectileClientRpc(Vector3 spawnPosition, Vector3 spawnDirection)
+    private void PrimaryFireClientRpc(Vector3 spawnPosition, Vector3 spawnDirection)
     {
         if (!IsOwner)
         {
@@ -73,7 +97,30 @@ public class ProjectileLauncher : NetworkBehaviour
 
     private void SpawnDummyProjectile(Vector3 spawnPosition, Vector3 spawnDirection)
     {
-        GameObject projectile = Instantiate(clientProjectilePrefab, spawnPosition, Quaternion.identity);
+        muzzleFlash.SetActive(true);
+        _muzzleFlashTimer = muzzleFlashDurationSeconds;
+        
+        SpawnProjectile(clientProjectilePrefab, spawnPosition, spawnDirection);
+
+    }
+
+    private void SpawnProjectile(GameObject projectilePrefab, Vector3 spawnPosition, Vector3 spawnDirection)
+    {
+        GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
         projectile.transform.up = spawnDirection;
+        
+        Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), playerCollider);
+
+        if (projectile.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
+        {
+            rb.linearVelocity = rb.transform.up * projectileSpeed;
+        }
+    }
+
+    private IEnumerator ActivateMuzzleFlash()
+    {
+        muzzleFlash.SetActive(true);
+        yield return new WaitForSeconds(_muzzleFlashTimer);
+        muzzleFlash.SetActive(false);
     }
 }
