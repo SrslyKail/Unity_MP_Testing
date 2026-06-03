@@ -1,7 +1,9 @@
 
+using UnityEngine;
+
 public abstract class Coin : Pickup<int>
 {
-    protected int CoinValue;
+    [SerializeField] protected int CoinValue;
 
     public void SetValue(int value)
     {

@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1857712499396259711, guid: c6d1d45b01bc848498aafb2b78de3c2f, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3294766193093000976, guid: c6d1d45b01bc848498aafb2b78de3c2f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -83,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RespawningCoin
   ShowTopMostFoldoutHeaderGroup: 1
   spriteRenderer: {fileID: 4159495872908509336}
+  CoinValue: 10
 --- !u!212 &4159495872908509336 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3416677053359292845, guid: c6d1d45b01bc848498aafb2b78de3c2f, type: 3}

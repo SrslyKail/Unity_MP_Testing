@@ -1,6 +1,9 @@
 
+using System;
+
 public class RespawningCoin : Coin
 {
+
     public override int Collect()
     {
         if (!IsServer)
