@@ -5,12 +5,6 @@ using UnityEngine;
 public class RespawningCoin : Coin
 {
     public override event Action<Pickup<int>> OnCollected;
-    private Vector3 _prevPosition;
-
-    private void Start()
-    {
-        _prevPosition = transform.position;
-    }
 
     private void Update()
     {
@@ -18,12 +12,6 @@ public class RespawningCoin : Coin
         {
             return;
         }
-
-        // if (!_prevPosition.Equals(transform.position))
-        // {
-        //     Show(true);
-        //     _prevPosition = transform.position;
-        // }
         if (transform.hasChanged)
         {
             Show(true);
