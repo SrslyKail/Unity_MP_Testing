@@ -3,10 +3,15 @@ using UnityEngine;
 
 public abstract class Coin : Pickup<int>
 {
-    [SerializeField] protected int CoinValue;
+    [SerializeField] protected int coinValue;
 
     public void SetValue(int value)
     {
-        CoinValue = value;
+        coinValue = value;
+    }
+
+    public override void Reset()
+    {
+        IsCollected = false;
     }
 }
